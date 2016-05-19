@@ -32,5 +32,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     })
     .then(length => sendResponse(length));
 
+  // return true to signify async
   return true;
 });
