@@ -18,19 +18,28 @@ for (const textarea of Array.from(nodes)) {
 }
 
 // get the first name from the text area using vanilla js
-function getFirstNameFromTextArea(textarea) {
-  const ancestor = textarea.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode
+function getFirstName() {
+  const ancestor = clickedTextArea.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode
     .parentNode.parentNode;
   const nameNode = ancestor.querySelector('a');
   const firstName = nameNode.text.split(' ')[0];
   return firstName;
 }
 
+// sets the text on the visible text area and on the hidden input text field
+function setText(text) {
+  // the visible text area
+  clickedTextArea.value = text;
+
+  // the hidden input
+  clickedTextArea.parentNode.parentNode.parentNode.parentNode.children[2].value = text;
+}
+
 // create the contextual menu by sending a default message
 chrome.runtime.sendMessage(true, () => {
   // listen for contextual menu selections
   chrome.runtime.onMessage.addListener(holiday => {
-    const firstName = getFirstNameFromTextArea(clickedTextArea);
-    clickedTextArea.value = `Happy ${holiday} ${firstName}!`;
+    const firstName = getFirstName();
+    setText(`Happy ${holiday} ${firstName}!`);
   });
 });
