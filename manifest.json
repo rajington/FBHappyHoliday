@@ -1,7 +1,7 @@
 {
   "name": "FB Happy Holiday",
   "description": "Turn boring 'Happy Birthday!' posts into 'Happy Obsure Holiday!' using https://www.checkiday.com/",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "permissions" : [
     "contextMenus",
     "https://www.checkiday.com/rss.php"
@@ -14,6 +14,7 @@
     "128": "icon128.png",
     "256": "icon256.png"
   },
+  "browser_action": {},
   "content_scripts": [
     {
       "matches": ["https://www.facebook.com/events/birthdays"],
