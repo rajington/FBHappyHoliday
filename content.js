@@ -26,20 +26,13 @@ function getFirstName() {
   return firstName;
 }
 
-// sets the text on the visible text area and on the hidden input text field
-function setText(text) {
-  // the visible text area
-  clickedTextArea.value = text;
-
-  // the hidden input
-  clickedTextArea.parentNode.parentNode.parentNode.parentNode.children[2].value = text;
-}
-
 // create the contextual menu by sending a default message
 chrome.runtime.sendMessage(true, () => {
   // listen for contextual menu selections
   chrome.runtime.onMessage.addListener(holiday => {
-    const firstName = getFirstName();
-    setText(`Happy ${holiday} ${firstName}!`);
+    const firstName = getFirstName(clickedTextArea);
+    // set the text on the visible text area and fire the event
+    clickedTextArea.value = `Happy ${holiday} ${firstName}!`;
+    clickedTextArea.dispatchEvent(new Event('change'));
   });
 });
