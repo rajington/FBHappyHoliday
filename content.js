@@ -1,9 +1,12 @@
-// we must remember the last element we clicked so we know where to insert the message
+// create the context menu by sending a wakeup
+chrome.runtime.sendMessage(true);
+
+// we must remember which text area the context menu was triggered
 let clickedTextArea;
 
-// mouse event listener that persists the element clicked
+// mouse event listener that persists the element triggered
 function rememberRightClickedElement({ button, target }) {
-  // right click
+  // check if right click, meaning context menu triggered
   if (button === 2) {
     clickedTextArea = target;
   }
@@ -17,22 +20,19 @@ for (const textarea of Array.from(nodes)) {
   textarea.addEventListener('mousedown', rememberRightClickedElement);
 }
 
-// get the first name from the text area using vanilla js
-function getFirstName() {
-  const ancestor = clickedTextArea.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode
+// get the first name starting from the text area using vanilla js
+function getFirstName(textarea) {
+  const ancestor = textarea.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode
     .parentNode.parentNode;
   const nameNode = ancestor.querySelector('a');
   const firstName = nameNode.text.split(' ')[0];
   return firstName;
 }
 
-// create the contextual menu by sending a default message
-chrome.runtime.sendMessage(true, () => {
-  // listen for contextual menu selections
-  chrome.runtime.onMessage.addListener(holiday => {
-    const firstName = getFirstName(clickedTextArea);
-    // set the text on the visible text area and fire the event
-    clickedTextArea.value = `Happy ${holiday} ${firstName}!`;
-    clickedTextArea.dispatchEvent(new Event('change'));
-  });
+// listen for contextual menu selections
+chrome.runtime.onMessage.addListener(holiday => {
+  const firstName = getFirstName(clickedTextArea);
+  // set the text on the visible text area and fire the event
+  clickedTextArea.value = `Happy ${holiday} ${firstName}!`;
+  clickedTextArea.dispatchEvent(new Event('change'));
 });
