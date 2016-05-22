@@ -1,17 +1,10 @@
-function getHolidays(text) {
-  const parser = new DOMParser();
-  // server sometimes returns escaped HTML instead of XML entities...
-  const xmlDoc = parser.parseFromString(text, 'text/html');
-
-  const nodes = xmlDoc.querySelectorAll('item title');
-
-  return Array.from(nodes).map(node => node.text);
-}
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  fetch('https://www.checkiday.com/rss.php')
-    .then(response => response.text())
-    .then(getHolidays)
+  // format today's date for API
+  const date = new Date();
+  const monthDay = `${date.getMonth() + 1}/${date.getDate()}`;
+
+  fetch(`https://www.checkiday.com/api.php?d=${monthDay}`)
+    .then(resp => resp.json())
     .then(holidays => {
       chrome.contextMenus.removeAll();
 
