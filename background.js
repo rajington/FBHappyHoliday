@@ -1,6 +1,5 @@
 chrome.browserAction.onClicked.addListener(() => chrome.tabs.create({
-  // launch the URL (from the manifest to avoid duplication)
-  url: chrome.runtime.getManifest().content_scripts[0].matches[0],
+  url: 'https://www.facebook.com/events/birthdays',
 }));
 
 // trigger sending context menu clicks to the tab that sent it
@@ -11,7 +10,7 @@ chrome.contextMenus.onClicked.addListener(({ menuItemId }, tab) => {
 
 let cache = null;
 
-chrome.runtime.onMessage.addListener((request, sender) => {
+chrome.runtime.onMessage.addListener(() => {
 
   // format today's date for API
   const date = new Date();
@@ -29,7 +28,7 @@ chrome.runtime.onMessage.addListener((request, sender) => {
             id: holiday,
             title: holiday,
             contexts: ['editable'],
-            documentUrlPatterns: [sender.url],
+            documentUrlPatterns: chrome.runtime.getManifest().content_scripts[0].matches,
           });
         }
 
