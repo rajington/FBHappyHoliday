@@ -1,10 +1,10 @@
 {
   "name": "FB Happy Holiday",
   "description": "Turn boring 'Happy Birthday!' posts into 'Happy Obsure Holiday!' using https://www.checkiday.com/",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "permissions" : [
     "contextMenus",
-    "https://www.checkiday.com/rss.php"
+    "https://www.checkiday.com/"
   ],
   "icons": {
     "16": "icon16.png",
