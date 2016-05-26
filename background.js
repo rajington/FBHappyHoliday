@@ -4,23 +4,25 @@ chrome.browserAction.onClicked.addListener(() => chrome.tabs.create({
 
 // trigger sending context menu clicks to the tab that sent it
 chrome.contextMenus.onClicked.addListener(({ menuItemId }, tab) => {
-  // console.log(`sending message: ${menuItemId}`);
   chrome.tabs.sendMessage(tab.id, menuItemId);
 });
 
 let cache = null;
 
 chrome.runtime.onMessage.addListener(() => {
+  // console.log(`received message, cache is: ${cache}`);
 
   // format today's date for API
   const date = new Date();
   const monthDay = `${date.getMonth() + 1}/${date.getDate()}`;
 
+  // console.log(`cache is: ${cache}, monthDay is ${monthDay}`);
   // if we haven't gotten data yet or for today
   if (cache == null || cache !== monthDay) {
     fetch(`https://www.checkiday.com/api.php?d=${monthDay}`)
       .then(resp => resp.json())
       .then(holidays => {
+        // console.log(`clearing contextMenu, adding ${holidays.length} holidays`);
         chrome.contextMenus.removeAll();
 
         for (const holiday of holidays) {

@@ -8,6 +8,7 @@ let clickedTextArea;
 function rememberRightClickedElement({ button, target }) {
   // check if right click, meaning context menu triggered
   if (button === 2) {
+    // console.log(`remembering ${target}`);
     clickedTextArea = target;
   }
 }
@@ -32,6 +33,7 @@ function getFirstName(textarea) {
 // listen for contextual menu selections
 chrome.runtime.onMessage.addListener(holiday => {
   const firstName = getFirstName(clickedTextArea);
+  // console.log(`updating ${clickedTextArea.id} with ${holiday} and ${firstName}`);
   // set the text on the visible text area and fire the event
   clickedTextArea.value = `Happy ${holiday} ${firstName}!`;
   clickedTextArea.dispatchEvent(new Event('change'));
