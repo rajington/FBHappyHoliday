@@ -3,13 +3,15 @@ chrome.browserAction.onClicked.addListener(() => chrome.tabs.create({
   url: chrome.runtime.getManifest().content_scripts[0].matches[0],
 }));
 
+// trigger sending context menu clicks to the tab that sent it
+chrome.contextMenus.onClicked.addListener(({ menuItemId }, tab) => {
+  // console.log(`sending message: ${menuItemId}`);
+  chrome.tabs.sendMessage(tab.id, menuItemId);
+});
+
 let cache = null;
 
 chrome.runtime.onMessage.addListener((request, sender) => {
-  // trigger sending context menu clicks to this tab as well
-  chrome.contextMenus.onClicked.addListener(({ menuItemId }) => {
-    chrome.tabs.sendMessage(sender.tab.id, menuItemId);
-  });
 
   // format today's date for API
   const date = new Date();
