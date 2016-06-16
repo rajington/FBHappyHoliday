@@ -9,7 +9,7 @@ chrome.contextMenus.onClicked.addListener(({ menuItemId }, tab) => {
 
 let cache = null;
 
-chrome.runtime.onMessage.addListener(() => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   // console.log(`received message, cache is: ${cache}`);
 
   // format today's date for API
@@ -36,11 +36,13 @@ chrome.runtime.onMessage.addListener(() => {
 
         // we don't need to update
         cache = monthDay;
+        sendResponse(`updated: ${monthDay}`);
       });
 
     // return true to signify async
     return true;
   }
 
+  sendResponse(`cached: ${monthDay}`);
   return false;
 });
