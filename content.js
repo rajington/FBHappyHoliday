@@ -16,9 +16,13 @@ function getFirstName(textarea) {
 
 // listen for contextual menu selections
 chrome.runtime.onMessage.addListener(holiday => {
-  const firstName = getFirstName(document.activeElement);
-  // console.log(`updating ${document.activeElement.id} with ${holiday} and ${firstName}`);
-  // set the text on the visible text area and fire the event
-  document.activeElement.value = `Happy ${holiday} ${firstName}!`;
-  document.activeElement.dispatchEvent(new Event('change'));
+  if (location.pathname !== '/events/birthdays') {
+    location.pathname = '/events/birthdays';
+  } else {
+    const firstName = getFirstName(document.activeElement);
+    // console.log(`updating ${document.activeElement.id} with ${holiday} and ${firstName}`);
+    // set the text on the visible text area and fire the event
+    document.activeElement.value = `Happy ${holiday} ${firstName}!`;
+    document.activeElement.dispatchEvent(new Event('change'));
+  }
 });
