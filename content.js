@@ -20,6 +20,10 @@ const nodes = document.querySelectorAll('#events_birthday_view textarea');
 for (const textarea of Array.from(nodes)) {
   textarea.addEventListener('mousedown', rememberRightClickedElement);
 }
+// console.log('waking up background');
+// chrome.runtime.sendMessage(true, response => {
+//   console.log(`background responded: ${response}`);
+// });
 
 // get the first name starting from the text area using vanilla js
 function getFirstName(textarea) {
