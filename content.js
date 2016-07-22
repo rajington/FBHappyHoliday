@@ -22,7 +22,8 @@ chrome.runtime.onMessage.addListener(holiday => {
     const firstName = getFirstName(document.activeElement);
     // console.log(`updating ${document.activeElement.id} with ${holiday} and ${firstName}`);
     // set the text on the visible text area and fire the event
-    document.activeElement.value = `Happy ${holiday} ${firstName}!`;
+    const hashtagHoliday = holiday.replace(/[^a-zA-z]/g, '');
+    document.activeElement.value = `Happy #${hashtagHoliday} ${firstName}!`;
     document.activeElement.dispatchEvent(new Event('change'));
   }
 });
